@@ -10,7 +10,7 @@ import (
 type Response struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
-	Result any `json:"results"`
+	Result  any `json:"results"`
 }
 
 type Users struct {
@@ -25,6 +25,7 @@ var userCounter int
 func main() {
 	r := gin.Default()
 
+	// GET ALL USERS
 	r.GET("/users", func(ctx *gin.Context) {
 		ctx.JSON(http.StatusOK, Response{
 			Success: true,
@@ -33,6 +34,7 @@ func main() {
 		})
 	})
 
+	// GET USER BY ID
 	r.GET("/users/:id", func(ctx *gin.Context) {
 		id := ctx.Param("id")
 
@@ -53,7 +55,7 @@ func main() {
 		})
 	})
 
-	// REGISTER
+	// CREATE (REGISTER)
 	r.POST("/register", func(ctx *gin.Context) {
 		var data Users
 
@@ -65,7 +67,6 @@ func main() {
 			return
 		}
 
-		// Generate ID
 		userCounter++
 		data.ID = strconv.Itoa(userCounter)
 
@@ -78,6 +79,62 @@ func main() {
 		})
 	})
 
+	// UPDATE USER
+	r.PUT("/users/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		var updatedData Users
+
+		if err := ctx.ShouldBindJSON(&updatedData); err != nil {
+			ctx.JSON(http.StatusBadRequest, Response{
+				Success: false,
+				Message: "Invalid request",
+			})
+			return
+		}
+
+		for i, user := range ListUser {
+			if user.ID == id {
+				ListUser[i].Email = updatedData.Email
+				ListUser[i].Password = updatedData.Password
+
+				ctx.JSON(http.StatusOK, Response{
+					Success: true,
+					Message: "User updated successfully",
+					Result:  ListUser[i],
+				})
+				return
+			}
+		}
+
+		ctx.JSON(http.StatusNotFound, Response{
+			Success: false,
+			Message: "User not found",
+		})
+	})
+
+	// DELETE USER
+	r.DELETE("/users/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+
+		for i, user := range ListUser {
+			if user.ID == id {
+				ListUser = append(ListUser[:i], ListUser[i+1:]...)
+
+				ctx.JSON(http.StatusOK, Response{
+					Success: true,
+					Message: "User deleted successfully",
+				})
+				return
+			}
+		}
+
+		ctx.JSON(http.StatusNotFound, Response{
+			Success: false,
+			Message: "User not found",
+		})
+	})
+
+	// LOGIN
 	r.POST("/login", func(ctx *gin.Context) {
 		var loginData Users
 
@@ -94,13 +151,12 @@ func main() {
 				ctx.JSON(http.StatusOK, Response{
 					Success: true,
 					Message: "Login successfully",
-					Result: user,
+					Result:  user,
 				})
 				return
 			}
 		}
 
-		// login fail
 		ctx.JSON(http.StatusUnauthorized, Response{
 			Success: false,
 			Message: "Login failed",
