@@ -1,0 +1,36 @@
+
+
+# POST /register HTTP/ 1.1
+# Host: localhost:8000
+# Content-Type: application/json
+
+# {
+#   "email": "hilmy@mail.com",
+#   "password": "123456"
+# }
+
+POST /register HTTP/ 1.1
+Host: localhost:8000
+Content-Type: application/json
+
+{
+  "email": "nanda@mail.com",
+  "password": "123456"
+}
+
+# POST http://localhost:8000/login
+# Content-Type: application/json
+
+# {
+#   "email": "hilmy@mail.com",
+#   "password": "123456"
+# }
+
+# GET /users/1 HTTP/ 1.1
+# Host: localhost:8000
+# Content-Type: application/json
+
+# {
+#   "email": "hilmy@mail.com",
+#   "password": "123456"
+# }
