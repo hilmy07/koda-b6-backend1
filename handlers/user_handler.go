@@ -15,7 +15,12 @@ type Response struct {
 	Result  any 		`json:"results"`
 }
 
-// GET ALL USERS
+// Get All Users godoc
+// @Summary Get all users
+// @Tags Users
+// @Produce json
+// @Success 200 {object} Response
+// @Router /users [get]
 func GetAllUsers(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, Response{
 		Success: true,
@@ -24,7 +29,14 @@ func GetAllUsers(ctx *gin.Context) {
 	})
 }
 
-// GET USER BY ID
+// Get User By ID godoc
+// @Summary Get user by ID
+// @Tags Users
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} Response
+// @Failure 404 {object} Response
+// @Router /users/{id} [get]
 func GetUserByID(ctx *gin.Context) {
 	id := ctx.Param("id")
 
@@ -45,7 +57,14 @@ func GetUserByID(ctx *gin.Context) {
 	})
 }
 
-// REGISTER
+// Register godoc
+// @Summary Register user
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body models.Users true "Register Data"
+// @Success 200 {object} Response
+// @Router /register [post]
 func Register(ctx *gin.Context) {
 	var data models.Users
 
@@ -81,7 +100,16 @@ func Register(ctx *gin.Context) {
 	})
 }
 
-// UPDATE
+// Update User godoc
+// @Summary Update user
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Param request body models.Users true "Update Data"
+// @Success 200 {object} Response
+// @Failure 404 {object} Response
+// @Router /users/{id} [put]
 func UpdateUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 	var updatedData models.Users
@@ -131,7 +159,14 @@ func UpdateUser(ctx *gin.Context) {
 	})
 }
 
-// DELETE
+// Delete User godoc
+// @Summary Delete user
+// @Tags Users
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} Response
+// @Failure 404 {object} Response
+// @Router /users/{id} [delete]
 func DeleteUser(ctx *gin.Context) {
 	id := ctx.Param("id")
 
@@ -156,13 +191,12 @@ func DeleteUser(ctx *gin.Context) {
 // Login godoc
 // @Summary Login with registered account
 // @Description Login using email and password
-// @Tags auth
+// @Tags Auth
 // @Accept json
 // @Produce json
 // @Param request body models.Users true "Login Data"
 // @Success 200 {object} Response
 // @Router /login [post]
-
 func Login(ctx *gin.Context) {
 	var loginData models.Users
 

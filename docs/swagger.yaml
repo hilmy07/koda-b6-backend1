@@ -1,9 +1,154 @@
 basePath: /
+definitions:
+  handlers.Response:
+    properties:
+      message:
+        type: string
+      results: {}
+      success:
+        type: boolean
+    type: object
+  models.Users:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        type: string
+    type: object
 host: localhost:8000
 info:
   contact: {}
   description: This is basic backend apps
   title: Backend Apps
   version: 1.0.0
-paths: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login using email and password
+      parameters:
+      - description: Login Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Users'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Login with registered account
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Register Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Users'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Register user
+      tags:
+      - Auth
+  /users:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Get all users
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Delete user
+      tags:
+      - Users
+    get:
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Get user by ID
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Update Data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Users'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.Response'
+      summary: Update user
+      tags:
+      - Users
 swagger: "2.0"
