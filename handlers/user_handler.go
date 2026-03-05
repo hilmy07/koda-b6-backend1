@@ -153,7 +153,16 @@ func DeleteUser(ctx *gin.Context) {
 	})
 }
 
-// LOGIN
+// Login godoc
+// @Summary Login with registered account
+// @Description Login using email and password
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body models.Users true "Login Data"
+// @Success 200 {object} Response
+// @Router /login [post]
+
 func Login(ctx *gin.Context) {
 	var loginData models.Users
 
